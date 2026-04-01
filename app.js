@@ -2,6 +2,7 @@ require('dotenv').config()
 const  express= require('express')
 const connectToDatabase = require('./database/index.js')
 const app= express()
+app.use(express.json())
 
 connectToDatabase()
 
@@ -25,11 +26,22 @@ app.get("/",(req,res)=>{
     })
 })
 
-app.get("/about",(req,res)=>{
-    res.json({
-        message : "This is about page"
+app.post("/blog",(req,res)=>{
+   console.log(req.body) //data from frontend
+    res.status(200).json({
+        message : " Blog API hit success"
     })
+
 })
+
+
+
+// app.get("/about",(req,res)=>{
+//     res.json({
+//         message : "This is about page"
+//     })
+// })
+
 
 app.listen(process.env.PORT,()=>{
     console.log("NodeJs Project has started")
