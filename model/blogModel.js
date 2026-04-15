@@ -10,15 +10,12 @@ const blogSchema = new Schema({
         type : String
     },
     description : {
-        type : Text
+        type : String
     },
      image : {
         type : String
-     },
-     age : {
-        type : Number
      }
 })
 //method
 const Blog = mongoose.model('Blog',blogSchema) //blog project
-module.exports = Blog //export
+module.exports = Blog //export 
