@@ -33,8 +33,8 @@ app.get("/",(req,res)=>{
     })
 })
 //uploading image
-app.post("/blog",upload.single('image'),(req,res)=>{
-    console.log(req.body)
+app.post("/blog",upload.single('image'),async (req,res)=>{
+    
 // app.post("/blog",upload.single('image'),async(req,res)=>{
 //    //console.log(req.body) //data from frontend
 //    //console.log(req.body.description)
@@ -42,30 +42,38 @@ app.post("/blog",upload.single('image'),(req,res)=>{
 // //    const title = req.body.title
 // //    const subtitle = req.body.subtitle
 // //    const image = req.body.image
-//     const {title,description,subtitle,image} = req.body
+    const {title,description,subtitle,image} = req.body
+    const filename = req.file.filename
 //     //checking if user has entered the data or not
-// if(!title || !description || !image || !subtitle){
-//     return res.status(400).json({
-//         message : "Please provide title,description,subtitle,image"
-//     })
-// }
-//     console.log(req.body)
-//     //inserting data
-//     await Blog.create({
-//         title : title,
-//         description : description,
-//          subtitle : subtitle,
-//          image : image
+if(!title || !description  || !subtitle){
+    return res.status(400).json({
+        message : "Please provide title,description,subtitle,image"
+    })
+}
+    //inserting data
+    await Blog.create({
+        title : title,
+        description : description,
+         subtitle : subtitle,
+         image : filename
 
-//     })
-                          
+    })
+                   
     
     res.status(200).json({
         message : " Blog API hit success"
     })
-
 })
 
+app.get("/blog",async (req,res)=>{
+   const blogs =  await Blog.find()
+   res.status(200).json({
+    message : "Blogs fetched successfully",
+    data : blogs
+})
+
+}
+)
 
 
 // app.get("/about",(req,res)=>{
@@ -73,6 +81,8 @@ app.post("/blog",upload.single('image'),(req,res)=>{
 //         message : "This is about page"
 //     })
 // })
+// viewing images stored in storage folder(IMPORTANT)
+app.use(express.static('./storage'))
 
 
 app.listen(process.env.PORT,()=>{
